@@ -4,68 +4,31 @@ PROBLEM IDENTIFICATION
 
 -A school needs a pl/sql program to store students names and grades for a specific courses,calculate avarage grade and display who passed or failed
 
+  WHAT IST USES:
+  
 -i approached the problem by implementing pl/sql features collections,records,GOTO.
 
 collections:to store multiple student grades
 
-records:to hold data for each student
+records:to hold data for each studentrade
 
 GOTO: to skip to the end if invald data is found
 
+WHAT'S INSide:
 
-PL/SQL CODE:
+student_grade_management .sql: it containspl/sqlcode
 
-DECLARE
-  -- Record type for student data
-  TYPE student_rec IS RECORD (
-    name VARCHAR2(30),
-    grade NUMBER(3)
-  );
+documentationstatement: explains how code works
 
-  -- Collection (array) of student records
-  TYPE student_table IS TABLE OF student_rec INDEX BY PLS_INTEGER;
-  students student_table;
+HOW IT IS SUPPOSED TO WORK:
 
-  total NUMBER := 0;
-  avg_grade NUMBER;
-  i NUMBER;
+-each student has 5 grades
 
-BEGIN
-  -- Adding sample data
-  students(1).name := 'Alice';
-  students(1).grade := 80;
+-the program calculates the avarage of those grade
 
-  students(2).name := 'Brian';
-  students(2).grade := 65;
+-if the avarage is 50 or more ,the student passes
 
-  students(3).name := 'Carine';
-  students(3).grade := 90;
+-fif the avarage is less than 50 the student fails.
 
-  -- Loop through students to calculate average
-  FOR i IN 1..students.COUNT LOOP
-    IF students(i).grade < 0 OR students(i).grade > 100 THEN
-      DBMS_OUTPUT.PUT_LINE('Invalid grade found! Skipping calculation...');
-      GOTO end_of_program;  -- Using GOTO
-    END IF;
 
-    total := total + students(i).grade;
-  END LOOP;
 
-  avg_grade := total / students.COUNT;
-
-  DBMS_OUTPUT.PUT_LINE('Average grade: ' || avg_grade);
-  DBMS_OUTPUT.PUT_LINE('--- Student Results ---');
-
-  FOR i IN 1..students.COUNT LOOP
-    IF students(i).grade >= 70 THEN
-      DBMS_OUTPUT.PUT_LINE(students(i).name || ' passed.');
-    ELSE
-      DBMS_OUTPUT.PUT_LINE(students(i).name || ' failed.');
-    END IF;
-  END LOOP;
-
-  <<end_of_program>>
-  NULL;
-
-END;
-/
