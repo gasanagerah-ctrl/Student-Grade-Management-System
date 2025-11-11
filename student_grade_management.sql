@@ -211,4 +211,53 @@ END student_grade_pkg;
 
 
 
+CTREATED PROCEDURE
+
+CREATE OR REPLACE PROCEDURE student_grade_analysis AS
+    TYPE student_record IS RECORD (
+        student_id NUMBER,
+        student_name VARCHAR2(100),
+        grade NUMBER(5,2)
+    );
+    
+    TYPE student_varray IS VARRAY(5) OF student_record;
+    
+    student_data student_varray := student_varray();
+    v_temp student_record;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Testing simple procedure...');
+    
+    student_data.EXTEND(2);
+    
+    -- Student 1
+    v_temp.student_id := 1;
+    v_temp.student_name := 'Test Student';
+    v_temp.grade := 85.5;
+    student_data(1) := v_temp;
+    
+    -- Student 2  
+    v_temp.student_id := 2;
+    v_temp.student_name := 'Another Student';
+    v_temp.grade := 90.0;
+    student_data(2) := v_temp;
+    
+    DBMS_OUTPUT.PUT_LINE('Student: ' || student_data(1).student_name);
+    DBMS_OUTPUT.PUT_LINE('Student: ' || student_data(2).student_name);
+    
+    -- GOTO example
+    GOTO demo_section;
+    
+    DBMS_OUTPUT.PUT_LINE('This will be skipped');
+    
+    <<demo_section>>
+    DBMS_OUTPUT.PUT_LINE('GOTO worked!');
+    
+END student_grade_analysis;
+/
+
+SET SERVEROUTPUT ON;
+EXECUTE student_grade_analysis;
+
+
+
 
